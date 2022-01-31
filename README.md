@@ -1,14 +1,14 @@
 # Description
 Discord bot that links cpp documentation to user inputted keywords in a Discord server.
 
-All documentation is from [cppreference](cppreference.com).
+All documentation is from [cppreference](https://en.cppreference.com/w/).
 
 # Bot Link
 [Click here to add this bot to your server!](https://discord.com/api/oauth2/authorize?client_id=937797956340449351&permissions=275415026688&scope=bot)
 
 # Usage
 The bot has 1 command:
-- `!cpp [term]`: takes a single argument which is your term you wish to query [cppreference](cppreference.com).
+- `!cpp [term]`: takes a single argument which is your term you wish to query [cppreference](https://en.cppreference.com/w/).
 
 Example:
 ```
