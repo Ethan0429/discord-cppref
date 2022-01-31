@@ -14,4 +14,5 @@ else:
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
+site = 'cppreference.com'
 
