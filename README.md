@@ -24,7 +24,7 @@ You need to set up your app in [Discord's Developer Portal first](https://discor
 
 Once you've done that, your environment variable(s) should be set accordingly in the generated `.env` file
 ```python3
-TOKEN           = os.getenv('DISCORD_TOKEN')        # Discord app key for interfacing with their API
+TOKEN = os.getenv('DISCORD_TOKEN')        # Discord app key for interfacing with their API
 ```
 
 ## Requirements
