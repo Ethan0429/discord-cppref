@@ -20,7 +20,7 @@ If the command was successful, the bot will reply to the user who sent the comma
 ## Setup
 Ignore from here on out if you don't plan on messing with the src at all.
 
-You need to set up your app in [Discord's Developer Portal first](https://discord.com/developers/applications). 
+You need to set up your app in [Discord's Developer Portal](https://discord.com/developers/applications). 
 
 Once you've done that, your environment variable(s) should be set accordingly in the generated `.env` file
 ```python3
