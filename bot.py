@@ -42,13 +42,14 @@ async def cpp(ctx: commands.Context, *, term: str):
         return
     
     cpp_link = parse_results(search(term, bot_vars.site))
-    if cpp_link == None:
-        await ctx.send(f'{member.mention} could not {term} in cppreference.com!')
+    if cpp_link == None or cpp_link == '':
+        await ctx.send(f'{member.mention} could not find `{term}` in cppreference.com!')
+        return
 
     term = await get_term(cpp_link)
     embed_msg = discord.Embed(
         title=f'cppreference.com - {term}', 
-        description=f'{member.mention} I found a reference to {term} in cppreference.com!\n[Click me or the title]({cpp_link})!',
+        description=f'{member.mention} I found a reference to `{term}` in cppreference.com!\n[Click me or the title]({cpp_link})!',
         url=cpp_link,
         colour=Color.blue()
     )
