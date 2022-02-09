@@ -40,21 +40,23 @@ async def cpp(ctx: commands.Context, *, term: str):
     if str == None:
         await ctx.send(f'{member.mention} `!cpp` usage: ```!cpp [SearchTerm] // without brackets```')
         return
-    
-    cpp_link = parse_results(search(term, bot_vars.site))
-    if cpp_link == None or cpp_link == '':
-        await ctx.send(f'{member.mention} could not find `{term}` in cppreference.com!')
+
+    site = 'cppreference.com'
+    ref_link = parse_results(search(term, bot_vars.cppref))
+    if ref_link == None or ref_link == '':
+        ref_link = parse_results(search(term), bot_vars.man7)
+        site = 'man7.org'
         return
 
-    term = await get_term(cpp_link)
+    term = await get_term(ref_link)
     embed_msg = discord.Embed(
         title=f'cppreference.com - {term}', 
-        description=f'{member.mention} I found a reference to `{term}` in cppreference.com!\n[Click me or the title]({cpp_link})!',
-        url=cpp_link,
+        description=f'{member.mention} I found a reference to `{term}` in {site}!\n[Click me or the title]({ref_link})!',
+        url=ref_link,
         colour=Color.blue()
     )
     embed_msg.set_thumbnail(url="https://apastyle.apa.org/images/references-page-category_tcm11-282727_w1024_n.jpg"
-    ).set_author(name='CPP Ref Bot', url=cpp_link, icon_url="https://docs.microsoft.com/cs-cz/windows/images/c-logo.png"
+    ).set_author(name='CPP Ref Bot', url=ref_link, icon_url="https://docs.microsoft.com/cs-cz/windows/images/c-logo.png"
     ).add_field(name='GitHub', value='https://github.com/Ethan0429/discord-cppref', inline=False
     ).add_field(name='Created By', value='Ethan Rickert', inline=False)
     await ctx.send(content=f'{member.mention}', embed=embed_msg)
