@@ -15,11 +15,16 @@ e.g. if your search term is fsscanf, it will likely
 be formatted to fscanf, as that is what matches the
 existing search result.
 '''
-async def get_term(url: str):
-    url = ''.join(reversed(url))
-    term = ''.join([letter for letter in takewhile(lambda letter: letter != '/', url)])
-    return ''.join(reversed(term))
-
+async def get_term(url: str, mode: str):
+    if mode == 'cpp':
+        url = ''.join(reversed(url))
+        term = ''.join([letter for letter in takewhile(lambda letter: letter != '/', url)])
+        return ''.join(reversed(term))
+    elif mode == 'man':
+        url = ''.join(reversed(url))
+        term = ''.join([letter for letter in takewhile(lambda letter: letter != '.', url)])
+        return ''.join(reversed(term))
+        
 @bot.event
 async def on_ready(): 
     print(f'{bot.user} is online!')
@@ -43,19 +48,19 @@ async def cpp(ctx: commands.Context, *, term: str):
 
 
     cpp_link = parse_results(search(term, bot_vars.cppref))
-    man_link = parse_results(search(term), bot_vars.man7)
+    man_link = parse_results(search(term), bot_vars.man)
 
     # if neither cpp nor man has a valid link
     if (cpp_link == None or cpp_link == '') and (man_link == None or man_link == ''):
-        await ctx.send(f'{member.mention} could not find `{term}` in cppreference.com or man7.org!')
+        await ctx.send(f'{member.mention} could not find `{term}` in cppreference.com or man.org!')
         return
 
     # if only cpp link is available
     elif cpp_link == None or cpp_link == '':
-        term = await get_term(man_link)
+        term = await get_term(man_link, 'man')
         embed_msg = discord.Embed(
-            title=f'{bot_vars.man7_alias} - {term}', 
-            description=f'{member.mention} I found a reference to `{term}` in {bot_vars.man7_alias}!\n[Click me or the title]({man_link})!'
+            title=f'{bot_vars.man_alias} - {term}', 
+            description=f'{member.mention} I found a reference to `{term}` in {bot_vars.man_alias}!\n[Click me or the title]({man_link})!',
             url=man_link,
             colour=Color.blue()
         )
@@ -67,10 +72,10 @@ async def cpp(ctx: commands.Context, *, term: str):
 
     # if only man page link is available
     elif man_link == None or man_link == '':
-        term = await get_term(cpp_link)
+        term = await get_term(cpp_link, 'cpp')
         embed_msg = discord.Embed(
             title=f'{bot_vars.cppref} - {term}', 
-            description=f'{member.mention} I found a reference to `{term}` in {bot_vars.cppref}!\n[Click me or the title]({cpp_link})!'
+            description=f'{member.mention} I found a reference to `{term}` in {bot_vars.cppref}!\n[Click me or the title]({cpp_link})!',
             url=cpp_link,
             colour=Color.blue()
         )
@@ -82,13 +87,13 @@ async def cpp(ctx: commands.Context, *, term: str):
 
     # if both links are available            
     else:
-        cpp_term = await get_term(cpp_link)
-        man7_term = await get_term(man_link)
+        cpp_term = await get_term(cpp_link, 'cpp')
+        man_term = await get_term(man_link, 'man')
         embed_msg = discord.Embed(
             title=f'{bot_vars.cppref} - {term}', 
             description=f'''
             {member.mention} I found a reference to `{term}` in {bot_vars.cppref}!\n[Click me or the title]({cpp_link})!\n
-            Alternatively, [here is the Linux man7 link to {man7_term}]({man_link})''',
+            Alternatively, [here is the Linux man link to {man_term}]({man_link})''',
             url=cpp_link,
             colour=Color.blue()
         )
@@ -97,8 +102,5 @@ async def cpp(ctx: commands.Context, *, term: str):
         ).add_field(name='GitHub', value='https://github.com/Ethan0429/discord-cppref', inline=False
         ).add_field(name='Created By', value='Ethan Rickert', inline=False)
         await ctx.send(content=f'{member.mention}', embed=embed_msg)
-            
-
-
 
 bot.run(bot_vars.TOKEN)

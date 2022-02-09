@@ -15,6 +15,6 @@ else:
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 cppref = 'cppreference.com'
-man7   = 'man7.org/linux/man-pages'
-man7_alias = 'man7.org'
+man   = 'man7.org/linux/man-pages'
+man_alias = 'man7.org'
 
