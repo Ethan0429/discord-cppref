@@ -22,7 +22,7 @@ async def get_term(url: str, mode: str):
         term = ''.join([letter for letter in takewhile(lambda letter: letter != '/', url)])
         return ''.join(reversed(term))
     elif mode == 'man':
-        for i in range(start=1, stop=9):
+        for i in range(1, 9):
             url = url.replace('.{i}.html', url)
         
         url = ''.join(reversed(url))
