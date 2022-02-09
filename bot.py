@@ -48,7 +48,7 @@ async def cpp(ctx: commands.Context, *, term: str):
 
 
     cpp_link = parse_results(search(term, bot_vars.cppref))
-    man_link = parse_results(search(term), bot_vars.man)
+    man_link = parse_results(search(term, bot_vars.man))
 
     # if neither cpp nor man has a valid link
     if (cpp_link == None or cpp_link == '') and (man_link == None or man_link == ''):
