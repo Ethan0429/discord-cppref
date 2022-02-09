@@ -21,8 +21,13 @@ async def get_term(url: str, mode: str):
         term = ''.join([letter for letter in takewhile(lambda letter: letter != '/', url)])
         return ''.join(reversed(term))
     elif mode == 'man':
-        term = ''.join([letter for letter in takewhile(lambda letter: letter != '.', url)])
-        return term        
+        for i in range(8, start=1):
+            url = url.replace('.{i}.html', url)
+        
+        url = ''.join(reversed(url))
+        term = ''.join([letter for letter in takewhile(lambda letter: letter != '/', url)])
+        return ''.join(reversed(term))
+
 @bot.event
 async def on_ready(): 
     print(f'{bot.user} is online!')
