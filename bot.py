@@ -91,7 +91,7 @@ async def cpp(ctx: commands.Context, *, term: str):
             title=f'{bot_vars.cppref} - {term}', 
             description=f'''
             {member.mention} I found a reference to `{term}` in {bot_vars.cppref}!\n[Click me or the title]({cpp_link})!\n
-            Alternatively, [here is the Linux man link to {man_term}]({man_link})''',
+            **Man Link**\nAlternatively, [here is the Linux man link to {man_term}]({man_link})''',
             url=cpp_link,
             colour=Color.blue()
         )
