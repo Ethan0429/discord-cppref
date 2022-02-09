@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 # bot.py
+from tracemalloc import stop
 from query import search, parse_results
 from discord import Color
 from discord.ext import commands
@@ -21,7 +22,7 @@ async def get_term(url: str, mode: str):
         term = ''.join([letter for letter in takewhile(lambda letter: letter != '/', url)])
         return ''.join(reversed(term))
     elif mode == 'man':
-        for i in range(8, start=1):
+        for i in range(start=1, stop=9):
             url = url.replace('.{i}.html', url)
         
         url = ''.join(reversed(url))
