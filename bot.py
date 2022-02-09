@@ -43,7 +43,7 @@ Responds to the command sender with an embedded
 message to the reference link.
 '''
 @bot.command('cpp')
-async def cpp(ctx: commands.Context, *, term: str):
+async def cpp(ctx: commands.Context, term: str):
     member = ctx.author
 
     if str == None:
