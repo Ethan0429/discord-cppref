@@ -41,24 +41,64 @@ async def cpp(ctx: commands.Context, *, term: str):
         await ctx.send(f'{member.mention} `!cpp` usage: ```!cpp [SearchTerm] // without brackets```')
         return
 
-    site = 'cppreference.com'
-    ref_link = parse_results(search(term, bot_vars.cppref))
-    if ref_link == None or ref_link == '':
-        ref_link = parse_results(search(term), bot_vars.man7)
-        site = 'man7.org'
+
+    cpp_link = parse_results(search(term, bot_vars.cppref))
+    man_link = parse_results(search(term), bot_vars.man7)
+
+    # if neither cpp nor man has a valid link
+    if (cpp_link == None or cpp_link == '') and (man_link == None or man_link == ''):
+        await ctx.send(f'{member.mention} could not find `{term}` in cppreference.com or man7.org!')
         return
 
-    term = await get_term(ref_link)
-    embed_msg = discord.Embed(
-        title=f'{site} - {term}', 
-        description=f'{member.mention} I found a reference to `{term}` in {site}!\n[Click me or the title]({ref_link})!',
-        url=ref_link,
-        colour=Color.blue()
-    )
-    embed_msg.set_thumbnail(url="https://apastyle.apa.org/images/references-page-category_tcm11-282727_w1024_n.jpg"
-    ).set_author(name='CPP Ref Bot', url=ref_link, icon_url="https://docs.microsoft.com/cs-cz/windows/images/c-logo.png"
-    ).add_field(name='GitHub', value='https://github.com/Ethan0429/discord-cppref', inline=False
-    ).add_field(name='Created By', value='Ethan Rickert', inline=False)
-    await ctx.send(content=f'{member.mention}', embed=embed_msg)
+    # if only cpp link is available
+    elif cpp_link == None or cpp_link == '':
+        term = await get_term(man_link)
+        embed_msg = discord.Embed(
+            title=f'{bot_vars.man7_alias} - {term}', 
+            description=f'{member.mention} I found a reference to `{term}` in {bot_vars.man7_alias}!\n[Click me or the title]({man_link})!'
+            url=man_link,
+            colour=Color.blue()
+        )
+        embed_msg.set_thumbnail(url="https://apastyle.apa.org/images/references-page-category_tcm11-282727_w1024_n.jpg"
+        ).set_author(name='CPP Ref Bot', url=man_link, icon_url="https://docs.microsoft.com/cs-cz/windows/images/c-logo.png"
+        ).add_field(name='GitHub', value='https://github.com/Ethan0429/discord-cppref', inline=False
+        ).add_field(name='Created By', value='Ethan Rickert', inline=False)
+        await ctx.send(content=f'{member.mention}', embed=embed_msg)
+
+    # if only man page link is available
+    elif man_link == None or man_link == '':
+        term = await get_term(cpp_link)
+        embed_msg = discord.Embed(
+            title=f'{bot_vars.cppref} - {term}', 
+            description=f'{member.mention} I found a reference to `{term}` in {bot_vars.cppref}!\n[Click me or the title]({cpp_link})!'
+            url=cpp_link,
+            colour=Color.blue()
+        )
+        embed_msg.set_thumbnail(url="https://apastyle.apa.org/images/references-page-category_tcm11-282727_w1024_n.jpg"
+        ).set_author(name='CPP Ref Bot', url=cpp_link, icon_url="https://docs.microsoft.com/cs-cz/windows/images/c-logo.png"
+        ).add_field(name='GitHub', value='https://github.com/Ethan0429/discord-cppref', inline=False
+        ).add_field(name='Created By', value='Ethan Rickert', inline=False)
+        await ctx.send(content=f'{member.mention}', embed=embed_msg)
+
+    # if both links are available            
+    else:
+        cpp_term = await get_term(cpp_link)
+        man7_term = await get_term(man_link)
+        embed_msg = discord.Embed(
+            title=f'{bot_vars.cppref} - {term}', 
+            description=f'''
+            {member.mention} I found a reference to `{term}` in {bot_vars.cppref}!\n[Click me or the title]({cpp_link})!\n
+            Alternatively, [here is the Linux man7 link to {man7_term}]({man_link})''',
+            url=cpp_link,
+            colour=Color.blue()
+        )
+        embed_msg.set_thumbnail(url="https://apastyle.apa.org/images/references-page-category_tcm11-282727_w1024_n.jpg"
+        ).set_author(name='CPP Ref Bot', url=man_link, icon_url="https://docs.microsoft.com/cs-cz/windows/images/c-logo.png"
+        ).add_field(name='GitHub', value='https://github.com/Ethan0429/discord-cppref', inline=False
+        ).add_field(name='Created By', value='Ethan Rickert', inline=False)
+        await ctx.send(content=f'{member.mention}', embed=embed_msg)
+            
+
+
 
 bot.run(bot_vars.TOKEN)
