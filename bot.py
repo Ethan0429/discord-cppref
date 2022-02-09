@@ -21,10 +21,8 @@ async def get_term(url: str, mode: str):
         term = ''.join([letter for letter in takewhile(lambda letter: letter != '/', url)])
         return ''.join(reversed(term))
     elif mode == 'man':
-        url = ''.join(reversed(url))
         term = ''.join([letter for letter in takewhile(lambda letter: letter != '.', url)])
-        return ''.join(reversed(term))
-        
+        return term        
 @bot.event
 async def on_ready(): 
     print(f'{bot.user} is online!')
