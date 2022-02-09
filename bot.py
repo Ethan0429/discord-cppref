@@ -50,7 +50,7 @@ async def cpp(ctx: commands.Context, *, term: str):
 
     term = await get_term(ref_link)
     embed_msg = discord.Embed(
-        title=f'cppreference.com - {term}', 
+        title=f'{site} - {term}', 
         description=f'{member.mention} I found a reference to `{term}` in {site}!\n[Click me or the title]({ref_link})!',
         url=ref_link,
         colour=Color.blue()
