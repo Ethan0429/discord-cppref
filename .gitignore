@@ -2,3 +2,4 @@
 .connect
 utk-auth-aws.pem
 .vscode
+__pycache__/
